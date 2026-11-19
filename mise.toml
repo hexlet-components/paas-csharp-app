@@ -20,9 +20,14 @@ run = ["dotnet restore PaasCsharpApp.slnx", "hk install"]
 description = "Тесты HTTP-контракта приложения"
 run = "dotnet test"
 
+[tasks.build]
+description = "Собрать приложение теми же шагами, что стадия сборки Dockerfile"
+run = "dotnet publish src/PaasCsharpApp -c Release -o out"
+
 [tasks.start]
-description = "Запустить приложение локально"
-run = "dotnet run --project src/PaasCsharpApp"
+description = "Собрать и запустить приложение командой из CMD Dockerfile"
+depends = ["build"]
+run = "dotnet out/PaasCsharpApp.dll"
 
 [tasks.check]
 description = "Все проверки, тот же набор, что гоняет CI"
