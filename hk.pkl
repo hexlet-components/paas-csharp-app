@@ -6,12 +6,33 @@ import "package://github.com/jdx/hk/releases/download/v2.8.1/hk@2.8.1#/Builtins.
 // Быстрые проверки идут на каждый коммит. Сеть и долгие шаги вынесены в all:
 // их гоняют check, pre-push и CI.
 local fast = new Mapping<String, Step> {
+  // Шаги dotnet делят каталоги obj и bin, поэтому идут по одному.
+  ["dotnet-format"] {
+    glob = List("**/*.cs", "**/*.csproj", ".editorconfig")
+    exclusive = true
+    check = "dotnet format PaasCsharpApp.slnx --verify-no-changes"
+    fix = "dotnet format PaasCsharpApp.slnx"
+  }
   ["rumdl"] = Builtins.rumdl
   ["typos"] = Builtins.typos
   ["jactionlint"] = Builtins.jactionlint
 }
 
 local all = (fast) {
+  // Анализаторы SDK и Meziantou.Analyzer: предупреждения собираются как ошибки
+  // (Directory.Build.props).
+  ["dotnet-analyzers"] {
+    glob = List("**/*.cs", "**/*.csproj", "**/*.props", ".editorconfig")
+    exclusive = true
+    check = "dotnet build PaasCsharpApp.slnx --no-incremental"
+  }
+  // NuGet Audit срабатывает при restore, а NU1900-NU1904 в
+  // Directory.Build.props становятся ошибками. Нужна сеть.
+  ["nuget-audit"] {
+    glob = List("**/*.csproj", "**/*.props")
+    exclusive = true
+    check = "dotnet restore PaasCsharpApp.slnx --force-evaluate"
+  }
   ["lychee"] {
     glob = List("**/*.md")
     check = "lychee --config lychee.toml --no-progress {{files}}"

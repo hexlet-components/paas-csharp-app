@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/PaasCsharpApp/PaasCsharpApp.csproj" />
+  <Project Path="tests/PaasCsharpApp.Tests/PaasCsharpApp.Tests.csproj" />
+</Solution>

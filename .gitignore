@@ -1,2 +1,5 @@
-
 .lycheecache
+bin/
+obj/
+out/
+.env

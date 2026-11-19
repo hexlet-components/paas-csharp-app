@@ -1,5 +1,6 @@
 [tools]
 betterleaks = "latest"
+dotnet = "11.0"
 hk = "2"
 jactionlint = "latest"
 lychee = "latest"
@@ -11,15 +12,17 @@ rumdl = "latest"
 typos = "latest"
 
 # Задачи проекта живут здесь, Makefile только проксирует make <задача> в mise run.
-# Первая настройка (AGENTS.md) ставит зависимости стека в setup перед hk install
-# и заполняет test.
 [tasks.setup]
 description = "Поставить зависимости и git-хуки"
-run = ["hk install"]
+run = ["dotnet restore PaasCsharpApp.slnx", "hk install"]
 
 [tasks.test]
-description = "Тесты стека"
-run = 'echo "test не настроен, см. AGENTS.md" >&2; exit 1'
+description = "Тесты HTTP-контракта приложения"
+run = "dotnet test"
+
+[tasks.start]
+description = "Запустить приложение локально"
+run = "dotnet run --project src/PaasCsharpApp"
 
 [tasks.check]
 description = "Все проверки, тот же набор, что гоняет CI"
