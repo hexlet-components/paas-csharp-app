@@ -47,7 +47,7 @@ mise run test
 PORT=3000 SERVER_MESSAGE="Первая публикация" mise run start
 ```
 
-`make build` повторяет стадию сборки `Dockerfile`, `make start` запускает приложение командой из его `CMD` и перед этим сам выполняет `build`. Эти две цели работают без mise, нужен только рантайм стека.
+`make build` повторяет стадию сборки `Dockerfile`, `make start` запускает приложение командой из его `CMD` и перед этим сам выполняет `build`. Эти две цели работают без mise, нужен только .NET SDK 11, его установка описана в [инструкции Хекслета](https://github.com/Hexlet/ru-instructions/blob/main/dotnet.md).
 
 `make <задача>` вызывает ту же задачу mise.
 
