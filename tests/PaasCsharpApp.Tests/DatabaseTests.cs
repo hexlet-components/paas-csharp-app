@@ -67,6 +67,9 @@ public sealed class DatabaseTests
             builder.UseSetting("DATABASE_URL", Url);
         });
         using var client = factory.CreateClient();
+        // HEAD присылают проверки платформы, посещением он не считается.
+        using var head = new HttpRequestMessage(HttpMethod.Head, new Uri("/", UriKind.Relative));
+        using var headResponse = await client.SendAsync(head, TestContext.Current.CancellationToken);
         for (var visit = 1; visit <= 2; visit++)
         {
             var body = await client.GetStringAsync(new Uri("/", UriKind.Relative), TestContext.Current.CancellationToken);
