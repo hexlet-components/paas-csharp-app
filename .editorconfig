@@ -13,3 +13,8 @@ indent_size = 4
 file_scoped_namespace = true
 csharp_style_namespace_declarations = file_scoped:warning
 dotnet_sort_system_directives_first = true
+
+# Миграции создаёт dotnet ef migrations add, анализаторы проверяют только код,
+# написанный руками.
+[src/PaasCsharpApp/Migrations/*.cs]
+generated_code = true

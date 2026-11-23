@@ -14,6 +14,8 @@ internal sealed class TestApp(string message, List<SentryEvent> captured) : WebA
     {
         builder.UseSetting("SERVER_MESSAGE", message);
         builder.UseSetting("SENTRY_DSN", "http://public@127.0.0.1/1");
+        // Тесты контракта идут без базы, даже если DATABASE_URL задан в окружении.
+        builder.UseSetting("DATABASE_URL", string.Empty);
         builder.ConfigureServices(services =>
             services.PostConfigure<SentryAspNetCoreOptions>(options =>
             {
